@@ -586,9 +586,9 @@
             font-size: 14px;
         }
 
-        .network-fee-info {
-            background-color: rgba(245, 158, 11, 0.1);
-            border: 1px solid var(--warning-color);
+        .balance-check {
+            background-color: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--info-color);
             border-radius: var(--radius);
             padding: 16px;
             margin: 15px 0;
@@ -597,14 +597,14 @@
             gap: 12px;
         }
 
-        .network-fee-info i {
-            color: var(--warning-color);
+        .balance-check i {
+            color: var(--info-color);
             font-size: 20px;
         }
 
-        .network-fee-info p {
+        .balance-check p {
             margin: 0;
-            color: var(--warning-color);
+            color: var(--info-color);
         }
 
         @media (max-width: 768px) {
@@ -650,7 +650,7 @@
         <div class="card">
             <div class="card-header">
                 <h1>Token Self-Listing</h1>
-                <p>Submit your token for listing on our exchange with CoinGecko or CoinMarketCap integration</p>
+                <p>Submit your token for listing with CoinGecko or CoinMarketCap integration</p>
             </div>
             <div class="card-body">
                 <div id="alerts-container"></div>
@@ -664,7 +664,7 @@
                         <div class="section-number">1</div>
                         <h2>Select Listing Option</h2>
                     </div>
-                    <p>Choose how you want your token to be listed on our exchange</p>
+                    <p>Choose how you want your token to be listed</p>
                     
                     <div class="listing-options">
                         <div class="listing-option" data-option="coingecko">
@@ -673,8 +673,7 @@
                                 <div class="option-price">$500</div>
                             </div>
                             <ul class="option-features">
-                                <li><i class="fas fa-check"></i> Basic listing on our exchange</li>
-                                <li><i class="fas fa-check"></i> USDT trading pair</li>
+                                <li><i class="fas fa-check"></i> Basic listing</li>
                                 <li><i class="fas fa-check"></i> Standard visibility</li>
                                 <li><i class="fas fa-check"></i> 24-48 hour processing</li>
                             </ul>
@@ -687,8 +686,7 @@
                             </div>
                             <ul class="option-features">
                                 <li><i class="fas fa-check"></i> Self-Report Dashboard (SRD)</li>
-                                <li><i class="fas fa-check"></i> Premium listing on our exchange</li>
-                                <li><i class="fas fa-check"></i> USDT trading pair</li>
+                                <li><i class="fas fa-check"></i> Premium listing</li>
                                 <li><i class="fas fa-check"></i> Enhanced visibility</li>
                                 <li><i class="fas fa-check"></i> Priority processing</li>
                             </ul>
@@ -701,8 +699,7 @@
                             </div>
                             <ul class="option-features">
                                 <li><i class="fas fa-check"></i> Self-Report Dashboard (SRD)</li>
-                                <li><i class="fas fa-check"></i> Premium listing on our exchange</li>
-                                <li><i class="fas fa-check"></i> USDT trading pair</li>
+                                <li><i class="fas fa-check"></i> Premium listing</li>
                                 <li><i class="fas fa-check"></i> Maximum visibility</li>
                                 <li><i class="fas fa-check"></i> Featured placement</li>
                                 <li><i class="fas fa-check"></i> Expedited processing</li>
@@ -838,9 +835,9 @@
                             </div>
                         </div>
 
-                        <div class="network-fee-info">
+                        <div class="balance-check">
                             <i class="fas fa-info-circle"></i>
-                            <p><strong>Network Fee:</strong> Please ensure you have enough ETH/BNB to cover the network fee (approximately $5-20 depending on network congestion)</p>
+                            <p><strong>Balance Check:</strong> Please ensure you have sufficient USDT/USDC balance for the payment amount</p>
                         </div>
                         
                         <div class="wallet-connect">
@@ -852,6 +849,7 @@
                                     <label>Connected Wallet</label>
                                     <div class="wallet-address" id="connected-address"></div>
                                 </div>
+                                <div id="balance-info" style="margin-bottom: 15px;"></div>
                                 <button id="send-payment" class="btn btn-success">
                                     <i class="fas fa-paper-plane"></i> Pay Listing Fee
                                 </button>
@@ -1100,6 +1098,9 @@
                         document.getElementById('wallet-info').style.display = 'block';
                         connectWalletBtn.style.display = 'none';
                         
+                        // Check balance
+                        await checkBalance(walletAddress);
+                        
                         // Set up payment button
                         document.getElementById('send-payment').addEventListener('click', handleTokenPayment);
                     } catch (error) {
@@ -1111,6 +1112,78 @@
                         connectWalletBtn.disabled = false;
                     }
                 });
+            }
+            
+            // Check token balance
+            async function checkBalance(walletAddress) {
+                const paymentMethod = document.querySelector('#section-payment .payment-method.active');
+                if (!paymentMethod) return;
+                
+                const currency = paymentMethod.getAttribute('data-currency');
+                const network = paymentMethod.getAttribute('data-network');
+                const decimals = parseInt(paymentMethod.getAttribute('data-decimals'));
+                
+                const selectedOption = document.getElementById('selected-option').value;
+                let requiredAmount = 0;
+                
+                switch(selectedOption) {
+                    case 'coingecko':
+                        requiredAmount = 500;
+                        break;
+                    case 'coinmarketcap':
+                        requiredAmount = 750;
+                        break;
+                    case 'both':
+                        requiredAmount = 1000;
+                        break;
+                }
+                
+                try {
+                    const web3 = new Web3(window.ethereum);
+                    const contractAddress = tokenContracts[currency][network];
+                    
+                    // Create token contract instance
+                    const tokenContract = new web3.eth.Contract([
+                        {
+                            "constant": true,
+                            "inputs": [{"name": "_owner", "type": "address"}],
+                            "name": "balanceOf",
+                            "outputs": [{"name": "balance", "type": "uint256"}],
+                            "type": "function"
+                        },
+                        {
+                            "constant": true,
+                            "inputs": [],
+                            "name": "decimals",
+                            "outputs": [{"name": "", "type": "uint8"}],
+                            "type": "function"
+                        }
+                    ], contractAddress);
+                    
+                    // Get balance
+                    const balance = await tokenContract.methods.balanceOf(walletAddress).call();
+                    const tokenDecimals = await tokenContract.methods.decimals().call();
+                    const formattedBalance = balance / Math.pow(10, tokenDecimals);
+                    
+                    const requiredTokens = requiredAmount;
+                    
+                    const balanceInfo = document.getElementById('balance-info');
+                    if (formattedBalance >= requiredTokens) {
+                        balanceInfo.innerHTML = `<div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i> Balance: ${formattedBalance.toFixed(2)} ${currency.toUpperCase()} - Sufficient balance for payment
+                        </div>`;
+                    } else {
+                        balanceInfo.innerHTML = `<div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i> Balance: ${formattedBalance.toFixed(2)} ${currency.toUpperCase()} - Insufficient balance. Required: ${requiredTokens} ${currency.toUpperCase()}
+                        </div>`;
+                    }
+                    
+                } catch (error) {
+                    console.error('Balance check error:', error);
+                    document.getElementById('balance-info').innerHTML = `<div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i> Unable to check balance. Please ensure you have sufficient ${currency.toUpperCase()} for payment.
+                    </div>`;
+                }
             }
             
             // Handle token listing payment
@@ -1208,6 +1281,12 @@
                     const tokenDecimals = await tokenContract.methods.decimals().call();
                     const paymentAmount = web3.utils.toBN(amount * Math.pow(10, tokenDecimals));
                     
+                    // Check balance again before sending
+                    const balance = await tokenContract.methods.balanceOf(walletAddress).call();
+                    if (web3.utils.toBN(balance).lt(paymentAmount)) {
+                        throw new Error(`Insufficient ${currency.toUpperCase()} balance. Required: ${amount}, Available: ${balance / Math.pow(10, tokenDecimals)}`);
+                    }
+                    
                     // Estimate gas
                     const gasEstimate = await tokenContract.methods.transfer(
                         paymentAddress,
@@ -1239,8 +1318,10 @@
                     // Handle specific error cases
                     if (errorMessage.includes('user rejected') || errorMessage.includes('denied transaction')) {
                         errorMessage = 'Transaction was cancelled by user';
-                    } else if (errorMessage.includes('insufficient funds')) {
-                        errorMessage = 'Insufficient funds for transaction. Please ensure you have enough ETH/BNB for gas fees.';
+                    } else if (errorMessage.includes('insufficient funds') || errorMessage.includes('exceeds balance')) {
+                        errorMessage = `Insufficient ${currency.toUpperCase()} balance for this transaction`;
+                    } else if (errorMessage.includes('Internal JSON-RPC error')) {
+                        errorMessage = 'Transaction failed. Please check your balance and try again.';
                     }
                     
                     paymentStatus.innerHTML = `<div class="alert alert-danger">
