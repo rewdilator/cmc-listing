@@ -11,15 +11,19 @@
         :root {
             --primary-color: #4a6bff;
             --primary-dark: #3a56d4;
+            --primary-light: #eef1ff;
             --text-color: #333;
             --text-light: #666;
             --bg-color: #f9f9f9;
             --card-bg: #fff;
             --border-color: #e0e0e0;
-            --success-color: #4CAF50;
-            --danger-color: #f44336;
-            --warning-color: #ff9800;
-            --info-color: #2196F3;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --radius: 12px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
         }
 
         .dark-mode {
@@ -28,6 +32,8 @@
             --bg-color: #1a1a1a;
             --card-bg: #2a2a2a;
             --border-color: #444;
+            --primary-light: rgba(74, 107, 255, 0.1);
+            --shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         * {
@@ -41,8 +47,9 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            transition: background-color 0.3s, color 0.3s;
+            transition: var(--transition);
             padding: 20px;
+            min-height: 100vh;
         }
 
         .container {
@@ -60,8 +67,16 @@
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            color: var(--primary-color);
+            font-size: 32px;
         }
 
         .logo span {
@@ -75,16 +90,17 @@
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 6px;
+            border-radius: var(--radius);
             cursor: pointer;
             font-weight: 500;
-            transition: all 0.3s;
+            transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 8px;
             text-decoration: none;
+            font-size: 15px;
         }
 
         .btn-primary {
@@ -94,6 +110,8 @@
 
         .btn-primary:hover {
             background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(74, 107, 255, 0.3);
         }
 
         .btn-secondary {
@@ -112,8 +130,13 @@
             color: var(--text-color);
             font-size: 18px;
             cursor: pointer;
-            padding: 8px;
+            padding: 10px;
             border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .btn-icon:hover {
@@ -126,23 +149,29 @@
 
         .card {
             background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             overflow: hidden;
             margin-bottom: 30px;
+            transition: var(--transition);
         }
 
-        .dark-mode .card {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .dark-mode .card:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
 
         .card-header {
-            padding: 20px;
+            padding: 24px;
             border-bottom: 1px solid var(--border-color);
         }
 
         .card-body {
-            padding: 20px;
+            padding: 24px;
         }
 
         h1, h2, h3, h4 {
@@ -151,45 +180,48 @@
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 32px;
+            font-weight: 700;
         }
 
         h2 {
-            font-size: 24px;
+            font-size: 26px;
         }
 
         h3 {
-            font-size: 20px;
+            font-size: 22px;
         }
 
         p {
             margin-bottom: 15px;
             color: var(--text-light);
+            font-size: 16px;
         }
 
         .alert {
-            padding: 15px;
-            border-radius: 6px;
+            padding: 16px 20px;
+            border-radius: var(--radius);
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: var(--transition);
         }
 
         .alert-success {
-            background-color: rgba(76, 175, 80, 0.1);
+            background-color: rgba(16, 185, 129, 0.1);
             border: 1px solid var(--success-color);
             color: var(--success-color);
         }
 
         .alert-danger {
-            background-color: rgba(244, 67, 54, 0.1);
+            background-color: rgba(239, 68, 68, 0.1);
             border: 1px solid var(--danger-color);
             color: var(--danger-color);
         }
 
         .alert-info {
-            background-color: rgba(33, 150, 243, 0.1);
+            background-color: rgba(59, 130, 246, 0.1);
             border: 1px solid var(--info-color);
             color: var(--info-color);
         }
@@ -200,44 +232,16 @@
             font-size: 20px;
             cursor: pointer;
             color: inherit;
+            opacity: 0.7;
+            transition: var(--transition);
         }
 
-        .tabs-container {
-            margin-bottom: 30px;
-        }
-
-        .tabs-header {
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 20px;
-        }
-
-        .tab-button {
-            padding: 12px 24px;
-            background: none;
-            border: none;
-            border-bottom: 3px solid transparent;
-            cursor: pointer;
-            font-weight: 500;
-            color: var(--text-light);
-            transition: all 0.3s;
-        }
-
-        .tab-button.active {
-            color: var(--primary-color);
-            border-bottom-color: var(--primary-color);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
+        .close-btn:hover {
+            opacity: 1;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         label {
@@ -245,22 +249,25 @@
             margin-bottom: 8px;
             font-weight: 500;
             color: var(--text-color);
+            font-size: 15px;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px 15px;
+            padding: 14px 16px;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: var(--radius);
             background-color: var(--card-bg);
             color: var(--text-color);
             font-family: inherit;
-            transition: border-color 0.3s;
+            transition: var(--transition);
+            font-size: 15px;
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.1);
         }
 
         .input-with-icon {
@@ -269,96 +276,95 @@
 
         .input-with-icon i {
             position: absolute;
-            left: 15px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-light);
         }
 
         .input-with-icon input {
-            padding-left: 45px;
+            padding-left: 48px;
         }
 
         .form-text {
             font-size: 14px;
             color: var(--text-light);
-            margin-top: 5px;
+            margin-top: 6px;
         }
 
         .form-actions {
-            margin-top: 25px;
-        }
-
-        .token-preview {
-            margin-top: 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            background-color: var(--bg-color);
-        }
-
-        .token-header {
+            margin-top: 30px;
             display: flex;
-            align-items: center;
-            margin-bottom: 20px;
+            justify-content: flex-end;
         }
 
-        .token-icon {
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .token-name {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .token-symbol {
-            font-size: 1rem;
-            color: var(--text-light);
-            margin-left: 10px;
-        }
-
-        .token-details {
+        .listing-options {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
-        .detail-item {
-            margin-bottom: 10px;
+        .listing-option {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
-        .detail-label {
-            font-weight: 500;
-            color: var(--text-light);
-            margin-bottom: 5px;
+        .listing-option:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
         }
 
-        .detail-value {
-            word-break: break-all;
+        .listing-option.active {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+            transform: translateY(-5px);
         }
 
-        .contract-address {
-            font-family: 'Roboto Mono', monospace;
-            background-color: rgba(0,0,0,0.05);
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.9rem;
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
         }
 
-        .dark-mode .contract-address {
-            background-color: rgba(255,255,255,0.1);
+        .option-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .option-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .option-features li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .option-features li i {
+            color: var(--success-color);
+            margin-right: 10px;
+            margin-top: 4px;
+            flex-shrink: 0;
         }
 
         .payment-section {
-            margin-top: 20px;
-            padding: 20px;
+            margin-top: 30px;
+            padding: 24px;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: var(--radius);
             background-color: var(--bg-color);
         }
 
@@ -370,11 +376,14 @@
         }
 
         .payment-method {
-            padding: 10px 15px;
+            padding: 12px 18px;
             border: 1px solid var(--border-color);
-            border-radius: 4px;
+            border-radius: var(--radius);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .payment-method:hover {
@@ -388,16 +397,17 @@
         }
 
         .wallet-connect {
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .wallet-address {
             font-family: 'Roboto Mono', monospace;
             background-color: rgba(0,0,0,0.05);
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.9rem;
+            padding: 10px 14px;
+            border-radius: var(--radius);
+            font-size: 14px;
             word-break: break-all;
+            margin-top: 10px;
         }
 
         .dark-mode .wallet-address {
@@ -407,23 +417,24 @@
         .info-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 30px;
+            gap: 24px;
+            margin-top: 40px;
         }
 
         .info-card {
             background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             overflow: hidden;
+            transition: var(--transition);
         }
 
-        .dark-mode .info-card {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        .info-card:hover {
+            transform: translateY(-5px);
         }
 
         .info-card-header {
-            padding: 16px 20px;
+            padding: 20px 24px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
@@ -431,18 +442,19 @@
 
         .info-card-header h3 {
             margin: 0;
-            font-size: 1.1rem;
+            font-size: 18px;
             display: flex;
             align-items: center;
         }
 
         .info-card-header i {
-            margin-right: 10px;
+            margin-right: 12px;
             color: var(--primary-color);
+            font-size: 20px;
         }
 
         .info-card-body {
-            padding: 20px;
+            padding: 24px;
         }
 
         .process-steps {
@@ -454,7 +466,7 @@
         .process-steps li {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             position: relative;
         }
 
@@ -463,8 +475,8 @@
         }
 
         .step-number {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             background: var(--primary-color);
             color: white;
             border-radius: 50%;
@@ -472,12 +484,13 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            margin-right: 15px;
+            margin-right: 16px;
             flex-shrink: 0;
+            font-size: 14px;
         }
 
         .step-content {
-            padding-top: 4px;
+            padding-top: 6px;
         }
 
         .requirements-list {
@@ -487,7 +500,7 @@
         }
 
         .requirements-list li {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             display: flex;
             align-items: flex-start;
         }
@@ -498,8 +511,9 @@
 
         .requirements-list i {
             color: var(--success-color);
-            margin-right: 10px;
-            margin-top: 2px;
+            margin-right: 12px;
+            margin-top: 4px;
+            flex-shrink: 0;
         }
 
         .spinner {
@@ -521,58 +535,48 @@
             display: inline-block;
         }
 
-        .listing-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+        .progress-bar {
+            height: 6px;
+            background-color: var(--border-color);
+            border-radius: 3px;
             margin-bottom: 30px;
+            overflow: hidden;
         }
 
-        .listing-option {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
+        .progress {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.5s ease;
         }
 
-        .listing-option:hover {
-            border-color: var(--primary-color);
+        .form-section {
+            display: none;
         }
 
-        .listing-option.active {
-            border-color: var(--primary-color);
-            background-color: rgba(74, 107, 255, 0.05);
+        .form-section.active {
+            display: block;
         }
 
-        .option-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .option-price {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .option-features {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .option-features li {
-            margin-bottom: 10px;
+        .section-title {
             display: flex;
             align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .option-features li i {
-            color: var(--success-color);
-            margin-right: 10px;
+        .section-number {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
         }
 
         @media (max-width: 768px) {
@@ -580,12 +584,19 @@
                 grid-template-columns: 1fr;
             }
             
-            .token-details {
+            .listing-options {
                 grid-template-columns: 1fr;
             }
             
-            .listing-options {
-                grid-template-columns: 1fr;
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
             }
         }
     </style>
@@ -593,7 +604,10 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">Token<span>Listing</span></div>
+            <div class="logo">
+                <i class="fas fa-coins logo-icon"></i>
+                <div>Token<span>Listing</span></div>
+            </div>
             <div class="header-actions">
                 <button id="dark-mode-toggle" class="btn-icon" aria-label="Toggle dark mode">
                     <i class="fas fa-moon"></i>
@@ -608,318 +622,270 @@
         <div class="card">
             <div class="card-header">
                 <h1>Token Self-Listing</h1>
-                <p>Submit your token for listing on our exchange</p>
+                <p>Submit your token for listing on our exchange with CoinGecko or CoinMarketCap integration</p>
             </div>
             <div class="card-body">
                 <div id="alerts-container"></div>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="form-progress"></div>
+                </div>
 
-                <div class="tabs-container">
-                    <div class="tabs-header">
-                        <button class="tab-button active" data-tab="submit-token">Submit Your Token</button>
-                        <button class="tab-button" data-tab="market-maker">Market Maker</button>
+                <div class="form-section active" id="section-options">
+                    <div class="section-title">
+                        <div class="section-number">1</div>
+                        <h2>Select Listing Option</h2>
                     </div>
+                    <p>Choose how you want your token to be listed on our exchange</p>
                     
-                    <div class="tabs-content">
-                        <!-- Submit Token Tab -->
-                        <div id="submit-token-tab" class="tab-content active">
-                            <div class="listing-options">
-                                <div class="listing-option" data-option="coingecko">
-                                    <div class="option-header">
-                                        <h3>CoinGecko Listing</h3>
-                                        <div class="option-price">$500</div>
-                                    </div>
-                                    <ul class="option-features">
-                                        <li><i class="fas fa-check"></i> Listed on CoinGecko</li>
-                                        <li><i class="fas fa-check"></i> Basic listing on our exchange</li>
-                                        <li><i class="fas fa-check"></i> USDT trading pair</li>
-                                        <li><i class="fas fa-check"></i> Standard visibility</li>
-                                    </ul>
-                                </div>
-                                
-                                <div class="listing-option" data-option="coinmarketcap">
-                                    <div class="option-header">
-                                        <h3>CoinMarketCap + SRD</h3>
-                                        <div class="option-price">$750</div>
-                                    </div>
-                                    <ul class="option-features">
-                                        <li><i class="fas fa-check"></i> Listed on CoinMarketCap</li>
-                                        <li><i class="fas fa-check"></i> Sponsored Ranking Data (SRD)</li>
-                                        <li><i class="fas fa-check"></i> Premium listing on our exchange</li>
-                                        <li><i class="fas fa-check"></i> USDT trading pair</li>
-                                        <li><i class="fas fa-check"></i> Enhanced visibility</li>
-                                    </ul>
-                                </div>
-                                
-                                <div class="listing-option" data-option="both">
-                                    <div class="option-header">
-                                        <h3>CoinGecko + CoinMarketCap</h3>
-                                        <div class="option-price">$1000</div>
-                                    </div>
-                                    <ul class="option-features">
-                                        <li><i class="fas fa-check"></i> Listed on both CoinGecko & CoinMarketCap</li>
-                                        <li><i class="fas fa-check"></i> Sponsored Ranking Data (SRD)</li>
-                                        <li><i class="fas fa-check"></i> Premium listing on our exchange</li>
-                                        <li><i class="fas fa-check"></i> USDT trading pair</li>
-                                        <li><i class="fas fa-check"></i> Maximum visibility</li>
-                                        <li><i class="fas fa-check"></i> Featured placement</li>
-                                    </ul>
-                                </div>
+                    <div class="listing-options">
+                        <div class="listing-option" data-option="coingecko">
+                            <div class="option-header">
+                                <h3>CoinGecko Listing</h3>
+                                <div class="option-price">$500</div>
                             </div>
-                            
-                            <form id="token-form" class="form-card">
-                                <input type="hidden" id="selected-option" name="selected_option" value="">
-                                
-                                <div class="form-group">
-                                    <label for="token_name">Token Name</label>
-                                    <input type="text" class="form-control" id="token_name" name="token_name" placeholder="e.g., Bitcoin" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="token_symbol">Token Symbol</label>
-                                    <input type="text" class="form-control" id="token_symbol" name="token_symbol" placeholder="e.g., BTC" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="token_logo">Token Logo URL</label>
-                                    <input type="url" class="form-control" id="token_logo" name="token_logo" placeholder="https://example.com/logo.png">
-                                    <small class="form-text">Provide a direct link to your token's logo image (PNG or JPG)</small>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="contract_address">Smart Contract Address</label>
-                                    <input type="text" class="form-control" id="contract_address" name="contract_address" placeholder="0x..." required>
-                                    <small class="form-text">The address of your token's smart contract</small>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="blockchain">Blockchain</label>
-                                    <select class="form-control" id="blockchain" name="blockchain" required>
-                                        <option value="">Select Blockchain</option>
-                                        <option value="ethereum">Ethereum</option>
-                                        <option value="bsc">Binance Smart Chain</option>
-                                        <option value="polygon">Polygon</option>
-                                        <option value="solana">Solana</option>
-                                        <option value="avalanche">Avalanche</option>
-                                        <option value="arbitrum">Arbitrum</option>
-                                        <option value="optimism">Optimism</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="website">Project Website</label>
-                                    <input type="url" class="form-control" id="website" name="website" placeholder="https://example.com">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="telegram">Telegram</label>
-                                    <input type="url" class="form-control" id="telegram" name="telegram" placeholder="https://t.me/yourproject">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="twitter">Twitter</label>
-                                    <input type="url" class="form-control" id="twitter" name="twitter" placeholder="https://twitter.com/yourproject">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="description">Project Description</label>
-                                    <textarea class="form-control" id="description" name="description" rows="4" placeholder="Brief description of your project"></textarea>
-                                </div>
-                                
-                                <div class="payment-section">
-                                    <h3>Payment Required</h3>
-                                    <p id="payment-amount-text">Please select a listing option above to see the payment amount.</p>
-                                    
-                                    <div class="payment-methods">
-                                        <div class="payment-method active" data-currency="usdt" data-decimals="18" data-decimals-display="6">
-                                            <i class="fas fa-dollar-sign"></i> USDT (BEP20/ERC20)
-                                        </div>
-                                        <div class="payment-method" data-currency="usdc" data-decimals="18" data-decimals-display="6">
-                                            <i class="fas fa-dollar-sign"></i> USDC (BEP20/ERC20)
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="wallet-connect">
-                                        <button id="connect-wallet" class="btn btn-primary">
-                                            <i class="fas fa-wallet"></i> Connect Wallet
-                                        </button>
-                                        <div id="wallet-info" style="display: none; margin-top: 10px;">
-                                            <div class="form-group">
-                                                <label>Connected Wallet</label>
-                                                <div class="wallet-address" id="connected-address"></div>
-                                            </div>
-                                            <button id="send-payment" class="btn btn-success">
-                                                <i class="fas fa-paper-plane"></i> Pay Listing Fee
-                                            </button>
-                                            <div id="payment-status" style="margin-top: 10px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                            <ul class="option-features">
+                                <li><i class="fas fa-check"></i> Listed on CoinGecko</li>
+                                <li><i class="fas fa-check"></i> Basic listing on our exchange</li>
+                                <li><i class="fas fa-check"></i> USDT trading pair</li>
+                                <li><i class="fas fa-check"></i> Standard visibility</li>
+                                <li><i class="fas fa-check"></i> 24-48 hour processing</li>
+                            </ul>
                         </div>
                         
-                        <!-- Market Maker Tab -->
-                        <div id="market-maker-tab" class="tab-content">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3>Market Maker</h3>
-                                </div>
-                                <div class="card-body">
-                                    <p>Add liquidity to your token by selecting a volume tier:</p>
-                                    
-                                    <div class="volume-tiers">
-                                        <div class="listing-option" data-tier="10000">
-                                            <div class="option-header">
-                                                <h4>Up to $10k daily volume</h4>
-                                                <div class="option-price">$400</div>
-                                            </div>
-                                            <p>Equal of $200 of USDT/USDC and equal of $200 of current listed token</p>
-                                        </div>
-                                        
-                                        <div class="listing-option" data-tier="50000">
-                                            <div class="option-header">
-                                                <h4>Up to $50k daily volume</h4>
-                                                <div class="option-price">$1,000</div>
-                                            </div>
-                                            <p>Equal of $500 of USDT/USDC and equal of $500 of current listed token</p>
-                                        </div>
-                                        
-                                        <div class="listing-option" data-tier="200000">
-                                            <div class="option-header">
-                                                <h4>Up to $200k daily volume</h4>
-                                                <div class="option-price">$1,600</div>
-                                            </div>
-                                            <p>Equal of $800 of USDT/USDC and equal of $800 of current listed token</p>
-                                        </div>
-                                        
-                                        <div class="listing-option" data-tier="500000">
-                                            <div class="option-header">
-                                                <h4>Up to $500k daily volume</h4>
-                                                <div class="option-price">$2,000</div>
-                                            </div>
-                                            <p>Equal of $1,000 of USDT/USDC and equal of $1,000 of current listed token</p>
-                                        </div>
-                                        
-                                        <div class="listing-option" data-tier="1000000">
-                                            <div class="option-header">
-                                                <h4>Up to $1M daily volume</h4>
-                                                <div class="option-price">$3,000</div>
-                                            </div>
-                                            <p>Equal of $1,500 of USDT/USDC and equal of $1,500 of current listed token</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="payment-section">
-                                        <h3>Market Maker Payment</h3>
-                                        <p id="mm-payment-amount-text">Please select a volume tier above to see the payment amount.</p>
-                                        
-                                        <div class="payment-methods">
-                                            <div class="payment-method active" data-currency="usdt" data-decimals="18" data-decimals-display="6">
-                                                <i class="fas fa-dollar-sign"></i> USDT (BEP20/ERC20)
-                                            </div>
-                                            <div class="payment-method" data-currency="usdc" data-decimals="18" data-decimals-display="6">
-                                                <i class="fas fa-dollar-sign"></i> USDC (BEP20/ERC20)
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="wallet-connect">
-                                            <button id="connect-wallet-mm" class="btn btn-primary">
-                                                <i class="fas fa-wallet"></i> Connect Wallet
-                                            </button>
-                                            <div id="wallet-info-mm" style="display: none; margin-top: 10px;">
-                                                <div class="form-group">
-                                                    <label>Connected Wallet</label>
-                                                    <div class="wallet-address" id="connected-address-mm"></div>
-                                                </div>
-                                                <button id="send-payment-mm" class="btn btn-success">
-                                                    <i class="fas fa-paper-plane"></i> Pay Market Maker Fee
-                                                </button>
-                                                <div id="payment-status-mm" style="margin-top: 10px;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="listing-option" data-option="coinmarketcap">
+                            <div class="option-header">
+                                <h3>CoinMarketCap + SRD</h3>
+                                <div class="option-price">$750</div>
                             </div>
+                            <ul class="option-features">
+                                <li><i class="fas fa-check"></i> Listed on CoinMarketCap</li>
+                                <li><i class="fas fa-check"></i> Sponsored Ranking Data (SRD)</li>
+                                <li><i class="fas fa-check"></i> Premium listing on our exchange</li>
+                                <li><i class="fas fa-check"></i> USDT trading pair</li>
+                                <li><i class="fas fa-check"></i> Enhanced visibility</li>
+                                <li><i class="fas fa-check"></i> Priority processing</li>
+                            </ul>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="info-section">
-                    <div class="info-card">
-                        <div class="info-card-header">
-                            <h3><i class="fas fa-info-circle"></i> Listing Process</h3>
-                        </div>
-                        <div class="info-card-body">
-                            <ol class="process-steps">
-                                <li>
-                                    <div class="step-number">1</div>
-                                    <div class="step-content">Fill out your token information</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">2</div>
-                                    <div class="step-content">Select listing option (CoinGecko, CoinMarketCap, or both)</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">3</div>
-                                    <div class="step-content">Connect your wallet and pay the listing fee</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">4</div>
-                                    <div class="step-content">Token will be automatically listed</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">5</div>
-                                    <div class="step-content">Market will be created and enabled</div>
-                                </li>
-                                <li>
-                                    <div class="step-number">6</div>
-                                    <div class="step-content">Add liquidity through Market Maker (optional)</div>
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                    
-                    <div class="info-card">
-                        <div class="info-card-header">
-                            <h3><i class="fas fa-requirements"></i> Requirements</h3>
-                        </div>
-                        <div class="info-card-body">
-                            <ul class="requirements-list">
-                                <li><i class="fas fa-check-circle"></i> Valid smart contract address</li>
-                                <li><i class="fas fa-check-circle"></i> Project website and social media links</li>
-                                <li><i class="fas fa-check-circle"></i> Sufficient liquidity for trading</li>
-                                <li><i class="fas fa-check-circle"></i> Must not be a security token</li>
-                                <li><i class="fas fa-check-circle"></i> Listing fee payment required (USDT/USDC only)</li>
-                                <li><i class="fas fa-check-circle"></i> For CoinGecko/CoinMarketCap: Must be listed on respective platform</li>
+                        
+                        <div class="listing-option" data-option="both">
+                            <div class="option-header">
+                                <h3>CoinGecko + CoinMarketCap</h3>
+                                <div class="option-price">$1000</div>
+                            </div>
+                            <ul class="option-features">
+                                <li><i class="fas fa-check"></i> Listed on both CoinGecko & CoinMarketCap</li>
+                                <li><i class="fas fa-check"></i> Sponsored Ranking Data (SRD)</li>
+                                <li><i class="fas fa-check"></i> Premium listing on our exchange</li>
+                                <li><i class="fas fa-check"></i> USDT trading pair</li>
+                                <li><i class="fas fa-check"></i> Maximum visibility</li>
+                                <li><i class="fas fa-check"></i> Featured placement</li>
+                                <li><i class="fas fa-check"></i> Expedited processing</li>
                             </ul>
                         </div>
                     </div>
+                    
+                    <div class="form-actions">
+                        <button id="next-to-details" class="btn btn-primary" disabled>
+                            <span>Continue to Details</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-section" id="section-details">
+                    <div class="section-title">
+                        <div class="section-number">2</div>
+                        <h2>Token Details</h2>
+                    </div>
+                    <p>Provide information about your token and project</p>
+                    
+                    <form id="token-form">
+                        <input type="hidden" id="selected-option" name="selected_option" value="">
+                        
+                        <div class="form-group">
+                            <label for="token_name">Token Name</label>
+                            <input type="text" class="form-control" id="token_name" name="token_name" placeholder="e.g., Bitcoin" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="token_symbol">Token Symbol</label>
+                            <input type="text" class="form-control" id="token_symbol" name="token_symbol" placeholder="e.g., BTC" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="token_logo">Token Logo URL</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-image"></i>
+                                <input type="url" class="form-control" id="token_logo" name="token_logo" placeholder="https://example.com/logo.png">
+                            </div>
+                            <small class="form-text">Provide a direct link to your token's logo image (PNG or JPG, square format recommended)</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contract_address">Smart Contract Address</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-file-contract"></i>
+                                <input type="text" class="form-control" id="contract_address" name="contract_address" placeholder="0x..." required>
+                            </div>
+                            <small class="form-text">The address of your token's smart contract</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="blockchain">Blockchain</label>
+                            <select class="form-control" id="blockchain" name="blockchain" required>
+                                <option value="">Select Blockchain</option>
+                                <option value="ethereum">Ethereum</option>
+                                <option value="bsc">Binance Smart Chain</option>
+                                <option value="polygon">Polygon</option>
+                                <option value="solana">Solana</option>
+                                <option value="avalanche">Avalanche</option>
+                                <option value="arbitrum">Arbitrum</option>
+                                <option value="optimism">Optimism</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="website">Project Website</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-globe"></i>
+                                <input type="url" class="form-control" id="website" name="website" placeholder="https://example.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="telegram">Telegram</label>
+                            <div class="input-with-icon">
+                                <i class="fab fa-telegram"></i>
+                                <input type="url" class="form-control" id="telegram" name="telegram" placeholder="https://t.me/yourproject">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="twitter">Twitter</label>
+                            <div class="input-with-icon">
+                                <i class="fab fa-twitter"></i>
+                                <input type="url" class="form-control" id="twitter" name="twitter" placeholder="https://twitter.com/yourproject">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Project Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Brief description of your project, its purpose, and key features"></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" id="back-to-options" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i>
+                                <span>Back</span>
+                            </button>
+                            <button type="button" id="next-to-payment" class="btn btn-primary">
+                                <span>Continue to Payment</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="form-section" id="section-payment">
+                    <div class="section-title">
+                        <div class="section-number">3</div>
+                        <h2>Payment</h2>
+                    </div>
+                    <p>Complete your listing by paying the required fee</p>
+                    
+                    <div class="payment-section">
+                        <h3 id="payment-amount-text">Please select a listing option to see the payment amount</h3>
+                        
+                        <div class="payment-methods">
+                            <div class="payment-method active" data-currency="usdt" data-decimals="18" data-decimals-display="6">
+                                <i class="fas fa-dollar-sign"></i> USDT (BEP20/ERC20)
+                            </div>
+                            <div class="payment-method" data-currency="usdc" data-decimals="18" data-decimals-display="6">
+                                <i class="fas fa-dollar-sign"></i> USDC (BEP20/ERC20)
+                            </div>
+                        </div>
+                        
+                        <div class="wallet-connect">
+                            <button id="connect-wallet" class="btn btn-primary">
+                                <i class="fas fa-wallet"></i> Connect Wallet
+                            </button>
+                            <div id="wallet-info" style="display: none; margin-top: 10px;">
+                                <div class="form-group">
+                                    <label>Connected Wallet</label>
+                                    <div class="wallet-address" id="connected-address"></div>
+                                </div>
+                                <button id="send-payment" class="btn btn-success">
+                                    <i class="fas fa-paper-plane"></i> Pay Listing Fee
+                                </button>
+                                <div id="payment-status" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="back-to-details" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i>
+                            <span>Back</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <div class="info-card">
+                <div class="info-card-header">
+                    <h3><i class="fas fa-info-circle"></i> Listing Process</h3>
+                </div>
+                <div class="info-card-body">
+                    <ol class="process-steps">
+                        <li>
+                            <div class="step-number">1</div>
+                            <div class="step-content">Select your preferred listing option (CoinGecko, CoinMarketCap, or both)</div>
+                        </li>
+                        <li>
+                            <div class="step-number">2</div>
+                            <div class="step-content">Fill out your token and project details</div>
+                        </li>
+                        <li>
+                            <div class="step-number">3</div>
+                            <div class="step-content">Connect your wallet and pay the listing fee</div>
+                        </li>
+                        <li>
+                            <div class="step-number">4</div>
+                            <div class="step-content">Token will be automatically listed on our exchange</div>
+                        </li>
+                        <li>
+                            <div class="step-number">5</div>
+                            <div class="step-content">Market will be created and enabled for trading</div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-card-header">
+                    <h3><i class="fas fa-list-check"></i> Requirements</h3>
+                </div>
+                <div class="info-card-body">
+                    <ul class="requirements-list">
+                        <li><i class="fas fa-check-circle"></i> Valid smart contract address</li>
+                        <li><i class="fas fa-check-circle"></i> Project website and social media links</li>
+                        <li><i class="fas fa-check-circle"></i> Sufficient liquidity for trading</li>
+                        <li><i class="fas fa-check-circle"></i> Must not be a security token</li>
+                        <li><i class="fas fa-check-circle"></i> Listing fee payment required (USDT/USDC only)</li>
+                        <li><i class="fas fa-check-circle"></i> For CoinGecko/CoinMarketCap: Must be listed on respective platform</li>
+                        <li><i class="fas fa-check-circle"></i> Token must have active development and community</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Tab switching functionality
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
-            
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabId = button.getAttribute('data-tab');
-                    
-                    // Update active tab button
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    
-                    // Show corresponding tab content
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    document.getElementById(`${tabId}-tab`).classList.add('active');
-                });
-            });
-
             // Dark mode toggle
             const darkModeToggle = document.getElementById('dark-mode-toggle');
             if (darkModeToggle) {
@@ -947,8 +913,34 @@
                 }
             }
             
+            // Form navigation
+            const formSections = document.querySelectorAll('.form-section');
+            const progressBar = document.getElementById('form-progress');
+            let currentSection = 0;
+            
+            // Update progress bar
+            function updateProgress() {
+                const progress = ((currentSection + 1) / formSections.length) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+            
+            // Show specific section
+            function showSection(index) {
+                formSections.forEach((section, i) => {
+                    if (i === index) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+                currentSection = index;
+                updateProgress();
+            }
+            
             // Listing option selection
             const listingOptions = document.querySelectorAll('.listing-option[data-option]');
+            const nextToDetailsBtn = document.getElementById('next-to-details');
+            
             listingOptions.forEach(option => {
                 option.addEventListener('click', function() {
                     listingOptions.forEach(opt => opt.classList.remove('active'));
@@ -957,44 +949,56 @@
                     const selectedOption = this.getAttribute('data-option');
                     document.getElementById('selected-option').value = selectedOption;
                     
-                    // Update payment amount text
-                    const paymentAmountText = document.getElementById('payment-amount-text');
-                    let amount = 0;
-                    let optionName = '';
-                    
-                    switch(selectedOption) {
-                        case 'coingecko':
-                            amount = 500;
-                            optionName = 'CoinGecko Listing';
-                            break;
-                        case 'coinmarketcap':
-                            amount = 750;
-                            optionName = 'CoinMarketCap + SRD';
-                            break;
-                        case 'both':
-                            amount = 1000;
-                            optionName = 'CoinGecko + CoinMarketCap';
-                            break;
-                    }
-                    
-                    paymentAmountText.textContent = `Payment required: $${amount} USD equivalent for ${optionName}`;
+                    // Enable next button
+                    nextToDetailsBtn.disabled = false;
                 });
             });
             
-            // Volume tier selection for market maker
-            const volumeTiers = document.querySelectorAll('.listing-option[data-tier]');
-            volumeTiers.forEach(tier => {
-                tier.addEventListener('click', function() {
-                    volumeTiers.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const tierValue = this.getAttribute('data-tier');
-                    const amount = parseInt(this.querySelector('.option-price').textContent.replace('$', '').replace(',', ''));
-                    
-                    // Update payment amount text
-                    const paymentAmountText = document.getElementById('mm-payment-amount-text');
-                    paymentAmountText.textContent = `Payment required: $${amount} USD equivalent for up to $${parseInt(tierValue).toLocaleString()} daily volume`;
-                });
+            // Navigation buttons
+            document.getElementById('next-to-details').addEventListener('click', function() {
+                showSection(1);
+            });
+            
+            document.getElementById('back-to-options').addEventListener('click', function() {
+                showSection(0);
+            });
+            
+            document.getElementById('next-to-payment').addEventListener('click', function() {
+                // Validate form
+                const form = document.getElementById('token-form');
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+                
+                // Update payment amount text
+                const selectedOption = document.getElementById('selected-option').value;
+                let amount = 0;
+                let optionName = '';
+                
+                switch(selectedOption) {
+                    case 'coingecko':
+                        amount = 500;
+                        optionName = 'CoinGecko Listing';
+                        break;
+                    case 'coinmarketcap':
+                        amount = 750;
+                        optionName = 'CoinMarketCap + SRD';
+                        break;
+                    case 'both':
+                        amount = 1000;
+                        optionName = 'CoinGecko + CoinMarketCap';
+                        break;
+                }
+                
+                document.getElementById('payment-amount-text').textContent = 
+                    `Payment required: $${amount} USD equivalent for ${optionName}`;
+                
+                showSection(2);
+            });
+            
+            document.getElementById('back-to-details').addEventListener('click', function() {
+                showSection(1);
             });
             
             // Payment method selection
@@ -1043,42 +1047,6 @@
                 });
             }
             
-            // Wallet connection for market maker payment
-            const connectWalletMmBtn = document.getElementById('connect-wallet-mm');
-            if (connectWalletMmBtn) {
-                connectWalletMmBtn.addEventListener('click', async function() {
-                    if (typeof window.ethereum === 'undefined') {
-                        showAlert('Please install MetaMask or another Web3 wallet to proceed.', 'danger');
-                        return;
-                    }
-                    
-                    try {
-                        // Show loading state
-                        connectWalletMmBtn.innerHTML = '<span class="spinner"></span> Connecting...';
-                        connectWalletMmBtn.disabled = true;
-                        
-                        // Request account access
-                        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                        const walletAddress = accounts[0];
-                        
-                        // Display connected wallet
-                        document.getElementById('connected-address-mm').textContent = walletAddress;
-                        document.getElementById('wallet-info-mm').style.display = 'block';
-                        connectWalletMmBtn.style.display = 'none';
-                        
-                        // Set up payment button
-                        document.getElementById('send-payment-mm').addEventListener('click', handleMarketMakerPayment);
-                    } catch (error) {
-                        console.error('Wallet connection error:', error);
-                        showAlert('Failed to connect wallet: ' + (error.message || error), 'danger');
-                    } finally {
-                        // Reset button state
-                        connectWalletMmBtn.innerHTML = '<i class="fas fa-wallet"></i> Connect Wallet';
-                        connectWalletMmBtn.disabled = false;
-                    }
-                });
-            }
-            
             // Handle token listing payment
             async function handleTokenPayment() {
                 const selectedOption = document.getElementById('selected-option').value;
@@ -1087,7 +1055,7 @@
                     return;
                 }
                 
-                const paymentMethod = document.querySelector('#submit-token-tab .payment-method.active');
+                const paymentMethod = document.querySelector('#section-payment .payment-method.active');
                 if (!paymentMethod) {
                     showAlert('Please select a payment method.', 'danger');
                     return;
@@ -1108,32 +1076,11 @@
                 }
                 
                 // Process payment
-                await processPayment(amount, paymentMethod, 'token');
-            }
-            
-            // Handle market maker payment
-            async function handleMarketMakerPayment() {
-                const selectedTier = document.querySelector('#market-maker-tab .listing-option.active');
-                if (!selectedTier) {
-                    showAlert('Please select a volume tier first.', 'danger');
-                    return;
-                }
-                
-                const paymentMethod = document.querySelector('#market-maker-tab .payment-method.active');
-                if (!paymentMethod) {
-                    showAlert('Please select a payment method.', 'danger');
-                    return;
-                }
-                
-                // Get payment amount
-                const amount = parseInt(selectedTier.querySelector('.option-price').textContent.replace('$', '').replace(',', ''));
-                
-                // Process payment
-                await processPayment(amount, paymentMethod, 'market-maker');
+                await processPayment(amount, paymentMethod);
             }
             
             // Process payment function
-            async function processPayment(amount, paymentMethod, type) {
+            async function processPayment(amount, paymentMethod) {
                 const currency = paymentMethod.getAttribute('data-currency');
                 const decimals = parseInt(paymentMethod.getAttribute('data-decimals'));
                 const decimalsDisplay = parseInt(paymentMethod.getAttribute('data-decimals-display'));
@@ -1154,8 +1101,8 @@
                 // 3. Execute the transaction
                 
                 // For this demo, we'll simulate a successful payment
-                const paymentBtn = type === 'token' ? document.getElementById('send-payment') : document.getElementById('send-payment-mm');
-                const paymentStatus = type === 'token' ? document.getElementById('payment-status') : document.getElementById('payment-status-mm');
+                const paymentBtn = document.getElementById('send-payment');
+                const paymentStatus = document.getElementById('payment-status');
                 
                 // Show loading state
                 paymentBtn.innerHTML = '<span class="spinner"></span> Processing...';
@@ -1170,7 +1117,7 @@
                     </div>`;
                     
                     // Reset button
-                    paymentBtn.innerHTML = '<i class="fas fa-paper-plane"></i> ' + (type === 'token' ? 'Pay Listing Fee' : 'Pay Market Maker Fee');
+                    paymentBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Pay Listing Fee';
                     paymentBtn.disabled = false;
                     
                     // In a real application, you would submit the form data to your backend here
@@ -1199,6 +1146,9 @@
                     }
                 }, 5000);
             }
+            
+            // Initialize progress bar
+            updateProgress();
         });
     </script>
 </body>
