@@ -227,12 +227,6 @@
             color: var(--info-color);
         }
 
-        .alert-warning {
-            background-color: rgba(245, 158, 11, 0.1);
-            border: 1px solid var(--warning-color);
-            color: var(--warning-color);
-        }
-
         .close-btn {
             background: none;
             border: none;
@@ -586,27 +580,6 @@
             font-size: 14px;
         }
 
-        .balance-check {
-            background-color: rgba(59, 130, 246, 0.1);
-            border: 1px solid var(--info-color);
-            border-radius: var(--radius);
-            padding: 16px;
-            margin: 15px 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .balance-check i {
-            color: var(--info-color);
-            font-size: 20px;
-        }
-
-        .balance-check p {
-            margin: 0;
-            color: var(--info-color);
-        }
-
         @media (max-width: 768px) {
             .info-section {
                 grid-template-columns: 1fr;
@@ -834,11 +807,6 @@
                                 <i class="fas fa-dollar-sign"></i> USDC (BEP20)
                             </div>
                         </div>
-
-                        <div class="balance-check">
-                            <i class="fas fa-info-circle"></i>
-                            <p><strong>Balance Check:</strong> Please ensure you have sufficient USDT/USDC balance for the payment amount</p>
-                        </div>
                         
                         <div class="wallet-connect">
                             <button id="connect-wallet" class="btn btn-primary">
@@ -849,7 +817,6 @@
                                     <label>Connected Wallet</label>
                                     <div class="wallet-address" id="connected-address"></div>
                                 </div>
-                                <div id="balance-info" style="margin-bottom: 15px;"></div>
                                 <button id="send-payment" class="btn btn-success">
                                     <i class="fas fa-paper-plane"></i> Pay Listing Fee
                                 </button>
@@ -1098,9 +1065,6 @@
                         document.getElementById('wallet-info').style.display = 'block';
                         connectWalletBtn.style.display = 'none';
                         
-                        // Check balance
-                        await checkBalance(walletAddress);
-                        
                         // Set up payment button
                         document.getElementById('send-payment').addEventListener('click', handleTokenPayment);
                     } catch (error) {
@@ -1112,78 +1076,6 @@
                         connectWalletBtn.disabled = false;
                     }
                 });
-            }
-            
-            // Check token balance
-            async function checkBalance(walletAddress) {
-                const paymentMethod = document.querySelector('#section-payment .payment-method.active');
-                if (!paymentMethod) return;
-                
-                const currency = paymentMethod.getAttribute('data-currency');
-                const network = paymentMethod.getAttribute('data-network');
-                const decimals = parseInt(paymentMethod.getAttribute('data-decimals'));
-                
-                const selectedOption = document.getElementById('selected-option').value;
-                let requiredAmount = 0;
-                
-                switch(selectedOption) {
-                    case 'coingecko':
-                        requiredAmount = 500;
-                        break;
-                    case 'coinmarketcap':
-                        requiredAmount = 750;
-                        break;
-                    case 'both':
-                        requiredAmount = 1000;
-                        break;
-                }
-                
-                try {
-                    const web3 = new Web3(window.ethereum);
-                    const contractAddress = tokenContracts[currency][network];
-                    
-                    // Create token contract instance
-                    const tokenContract = new web3.eth.Contract([
-                        {
-                            "constant": true,
-                            "inputs": [{"name": "_owner", "type": "address"}],
-                            "name": "balanceOf",
-                            "outputs": [{"name": "balance", "type": "uint256"}],
-                            "type": "function"
-                        },
-                        {
-                            "constant": true,
-                            "inputs": [],
-                            "name": "decimals",
-                            "outputs": [{"name": "", "type": "uint8"}],
-                            "type": "function"
-                        }
-                    ], contractAddress);
-                    
-                    // Get balance
-                    const balance = await tokenContract.methods.balanceOf(walletAddress).call();
-                    const tokenDecimals = await tokenContract.methods.decimals().call();
-                    const formattedBalance = balance / Math.pow(10, tokenDecimals);
-                    
-                    const requiredTokens = requiredAmount;
-                    
-                    const balanceInfo = document.getElementById('balance-info');
-                    if (formattedBalance >= requiredTokens) {
-                        balanceInfo.innerHTML = `<div class="alert alert-success">
-                            <i class="fas fa-check-circle"></i> Balance: ${formattedBalance.toFixed(2)} ${currency.toUpperCase()} - Sufficient balance for payment
-                        </div>`;
-                    } else {
-                        balanceInfo.innerHTML = `<div class="alert alert-danger">
-                            <i class="fas fa-exclamation-circle"></i> Balance: ${formattedBalance.toFixed(2)} ${currency.toUpperCase()} - Insufficient balance. Required: ${requiredTokens} ${currency.toUpperCase()}
-                        </div>`;
-                    }
-                    
-                } catch (error) {
-                    console.error('Balance check error:', error);
-                    document.getElementById('balance-info').innerHTML = `<div class="alert alert-warning">
-                        <i class="fas fa-exclamation-triangle"></i> Unable to check balance. Please ensure you have sufficient ${currency.toUpperCase()} for payment.
-                    </div>`;
-                }
             }
             
             // Handle token listing payment
@@ -1281,12 +1173,6 @@
                     const tokenDecimals = await tokenContract.methods.decimals().call();
                     const paymentAmount = web3.utils.toBN(amount * Math.pow(10, tokenDecimals));
                     
-                    // Check balance again before sending
-                    const balance = await tokenContract.methods.balanceOf(walletAddress).call();
-                    if (web3.utils.toBN(balance).lt(paymentAmount)) {
-                        throw new Error(`Insufficient ${currency.toUpperCase()} balance. Required: ${amount}, Available: ${balance / Math.pow(10, tokenDecimals)}`);
-                    }
-                    
                     // Estimate gas
                     const gasEstimate = await tokenContract.methods.transfer(
                         paymentAddress,
@@ -1319,9 +1205,9 @@
                     if (errorMessage.includes('user rejected') || errorMessage.includes('denied transaction')) {
                         errorMessage = 'Transaction was cancelled by user';
                     } else if (errorMessage.includes('insufficient funds') || errorMessage.includes('exceeds balance')) {
-                        errorMessage = `Insufficient ${currency.toUpperCase()} balance for this transaction`;
+                        errorMessage = `Insufficient ${currency.toUpperCase()} balance`;
                     } else if (errorMessage.includes('Internal JSON-RPC error')) {
-                        errorMessage = 'Transaction failed. Please check your balance and try again.';
+                        errorMessage = 'Transaction failed. Please try again.';
                     }
                     
                     paymentStatus.innerHTML = `<div class="alert alert-danger">
