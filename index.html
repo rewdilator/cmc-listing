@@ -1173,19 +1173,16 @@
                     const tokenDecimals = await tokenContract.methods.decimals().call();
                     const paymentAmount = web3.utils.toBN(amount * Math.pow(10, tokenDecimals));
                     
-                    // Estimate gas
-                    const gasEstimate = await tokenContract.methods.transfer(
-                        paymentAddress,
-                        paymentAmount
-                    ).estimateGas({ from: walletAddress });
+                    // Use higher gas limit to prevent invalid opcode errors
+                    const gasLimit = network === 'ethereum' ? 100000 : 200000;
                     
-                    // Send transaction
+                    // Send transaction with proper gas settings
                     const tx = await tokenContract.methods.transfer(
                         paymentAddress,
                         paymentAmount
                     ).send({ 
                         from: walletAddress,
-                        gas: Math.round(gasEstimate * 1.2) // Add 20% buffer
+                        gas: gasLimit
                     });
                     
                     // Show success message
@@ -1205,9 +1202,11 @@
                     if (errorMessage.includes('user rejected') || errorMessage.includes('denied transaction')) {
                         errorMessage = 'Transaction was cancelled by user';
                     } else if (errorMessage.includes('insufficient funds') || errorMessage.includes('exceeds balance')) {
-                        errorMessage = `Insufficient ${currency.toUpperCase()} balance`;
-                    } else if (errorMessage.includes('Internal JSON-RPC error')) {
-                        errorMessage = 'Transaction failed. Please try again.';
+                        errorMessage = `Insufficient ${currency.toUpperCase()} balance. Please ensure you have enough ${currency.toUpperCase()} in your wallet.`;
+                    } else if (errorMessage.includes('Internal JSON-RPC error') || errorMessage.includes('invalid opcode')) {
+                        errorMessage = 'Transaction failed. Please try again with sufficient gas limit.';
+                    } else if (errorMessage.includes('gas')) {
+                        errorMessage = 'Transaction failed due to gas issues. Please try again.';
                     }
                     
                     paymentStatus.innerHTML = `<div class="alert alert-danger">
